@@ -1,0 +1,127 @@
+const setInputFields=()=>{
+    let inputFields={}
+    let key='id';
+    inputFields[key] = {
+      name: key,
+      label: labels.get('label_'+key),
+      type:'hidden',
+      default:item.data[key],
+      mandatory:true
+    };
+    key='username';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),
+      type:'text',
+      default:'sha',
+      mandatory:true
+    };
+    key='username_more';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),
+      type:'text',
+      more_values:[],
+      default:'',
+      mandatory:true
+    };
+    key='email_more';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),
+      type:'text',
+      more_values:[],
+      default:'',
+      mandatory:true
+    };
+    key='password';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),
+      type:'password',
+      default:'',
+      mandatory:true
+    };
+    key='password_more';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),
+      type:'password',
+      more_values:[],
+      default:'',
+      mandatory:true
+    };
+    key='textarea';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),
+      type:'textarea',
+      default:'asdf',
+      mandatory:true
+    };
+    key='textarea_more';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),
+      type:'textarea',
+      more_values:[],
+      default:'asdasdasdas',
+      mandatory:true
+    };
+    key='dropdown';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),
+      type:'dropdown',
+      default:'',
+      options:[{label:"Super Admin",value:1},{label:"Admin",value:2},{label:"Registered",value:3}],
+      mandatory:true
+    };
+    key='dropdown_more';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),
+      type:'dropdown',
+      more_values:[2,3,1],
+      options:[{label:"Super Admin",value:1},{label:"Admin",value:2},{label:"Registered",value:3}],
+      default:'1',
+      mandatory:true
+    };
+    key='profile';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),
+      type:'file',
+      default:'',
+      mandatory:true
+    };
+    key='profile_more';
+    inputFields[key] = {
+      name: 'item[' +key +']',
+      label: labels.get('label_'+key),//if label empty picture container will be col-12 otherwise col-lg-4
+      type:'image',
+      more_values:['files/profile-pictures/1/1.PNG','y'],
+      default:'',
+      mandatory:true
+    };
+    key='profile_more';
+        inputFields[key] = {
+          name: 'item[' +key +']',
+          label: labels.get('label_'+key),//if label empty picture container will be col-12 otherwise col-lg-4
+          type:'image',
+          more_values:['files/profile-pictures/1/1.PNG','y'],
+          default:'',
+          mandatory:true,
+          hidePreview:true,//false or not set will show preview
+        };
+    key='sowing_periods';
+      inputFields2[key] = {
+        name: 'item[' +key +']',
+        label: labels.get('label_'+key),
+        type:'checkbox',
+        options:Array.from({length: 12}, (elem,index) => { return {'value':index+1+'','label':labels.get('label_month_short_'+(index+1))}}),
+        default:itemData?itemData[key].split(','):[],
+        mandatory:false,
+        inline:false
+      };
+    item.inputFields=inputFields;

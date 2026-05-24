@@ -127,31 +127,6 @@ export default{
         hiddenElement.download = outputFile+'.csv';
         hiddenElement.click();
     },
-    exportCsv(columns,data,filename="output.csv")
-    {
-        let csvStr="";
-        for(let  key in columns.all){
-            let column=columns.all[key];
-            if((columns.hidden.indexOf(key))==-1){
-                csvStr=csvStr+'"'+column.label+'",';
-            }
-        }
-        csvStr+="\n";
-        for (let j=0;j<data.length;j++)
-        {
-            for(let  key in columns.all){
-                if((columns.hidden.indexOf(key))==-1){
-                    csvStr=csvStr+'"'+data[j][key]+'",';
-                }
-            }
-            csvStr+="\n";
-        }
-        let hiddenElement = document.createElement('a');
-        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvStr);
-        hiddenElement.target = '_blank';
-        hiddenElement.download = filename;
-        hiddenElement.click();
-    },
     showHtmlContentInNewWindow(htmlContent,winTitle = 'newWindow'){
         const  newWindow  = window.open();
         const myHtmlContent = `

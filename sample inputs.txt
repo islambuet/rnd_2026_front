@@ -1,3 +1,15 @@
+** key: id
+** name: input name
+** default: for initial value
+** type: type of input
+
+-- more_values:used for add more. array of strings.[]=no old values.['a','b']= two old values. Not exits means single entry.
+-- label: label/left part text. (lable||col_class_label) not exits then left part will not show
+-- col_class_label: col-4  //label column class.
+-- col_class_input: col-lg-4 col-8 //input column class. mandatory if col_class_label
+-- class: additional class for input field
+-- mandatory: show * beside label
+
 const setInputFields=()=>{
     let inputFields={}
     let key='id';

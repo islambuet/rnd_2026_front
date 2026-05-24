@@ -1,19 +1,19 @@
 <template>
   <div class="row mb-2" v-if="!inputItem.more_values">
-    <div class="col-4">
+    <div :class="inputItem.col_class_label?inputItem.col_class_label:'col-4'" v-if="inputItem.label || inputItem.col_class_label">
       <label class="font-weight-bold float-right">{{inputItem.label}} <span class="text-danger" v-if="inputItem.mandatory">*</span></label>
     </div>
-    <div class="col-lg-4 col-8">
+    <div :class="inputItem.col_class_input?inputItem.col_class_input:(inputItem.label || inputItem.col_class_label)?'col-lg-4 col-8':'col-12'">
       <div class="input-group" >
         <textarea :id="inputKey" class="form-control" :class="inputItem.class? inputItem.class:null" :name="inputItem.name">{{inputItem.default}}</textarea>
       </div>
     </div>
   </div>
   <div class="row mb-2" :id="inputKey+'_system_add_more_input_container'" v-else>
-    <div class="col-4">
+    <div :class="inputItem.col_class_label?inputItem.col_class_label:'col-4'" v-if="inputItem.label || inputItem.col_class_label">
       <label class="font-weight-bold float-right">{{inputItem.label}} <span class="text-danger" v-if="inputItem.mandatory">*</span></label>
     </div>
-    <div class="col-lg-4 col-8">
+    <div :class="inputItem.col_class_input?inputItem.col_class_input:(inputItem.label || inputItem.col_class_label)?'col-lg-4 col-8':'col-12'">
       <div class="row mb-2">
         <div class="col-12">
           <button type="button" class="system_add_more_button mr-2 mb-2 btn btn-sm bg-gradient-primary" @click="addMore(inputItem.default)"><i class="bi bi-plus-circle"></i> {{labels.get('label_add_more')}}</button>

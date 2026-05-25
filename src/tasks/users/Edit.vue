@@ -95,6 +95,30 @@ const setInputFields=async ()=>{
     options:taskData.user_groups.map((item)=>{ return {value:item.id,label:item.name}}),
     mandatory:true
   };
+  key='trial_station_ids';
+  let trail_stations=[];
+  for(let i=0;i<taskData.trial_stations.length;i++){
+    trail_stations.push({value:taskData.trial_stations[i].id,label:taskData.trial_stations[i].name})
+    //default_trial_station_ids.push(taskData.trial_stations[i].id);
+  }
+  inputFields[key] = {
+    name: 'item[' +key +']',
+    label: labels.get('label_'+key),
+    type:'checkbox',
+    options:trail_stations,
+    default:item.data[key].split(','),
+    mandatory:true
+  };
+  key='trial_station_ids';
+  inputFields[key] = {
+    name: 'item[' +key +']',
+    label: labels.get('label_'+key),
+    type:'checkbox',
+    options:taskData.trial_stations.filter((item)=>{ item.value=item.id.toString();item.label=item.name;return true}),
+    default:item.data[key].split(','),
+    mandatory:true
+  };
+
   key='part_id';
   inputFields[key] = {
     name: 'item[' +key +']',

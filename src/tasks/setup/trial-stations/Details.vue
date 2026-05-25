@@ -15,14 +15,13 @@
 </template>
 <script setup>
 
-  import globalVariables from "@/assets/globalVariables";
+
   import toastFunctions from "@/assets/toastFunctions";
   import labels from '@/labels'
   
   import {useRouter} from "vue-router";
   import {inject, reactive} from "vue";
   import axios from "axios";
-  import InputTemplate from '@/components/InputTemplate.vue';
   import DetailTemplate from '@/components/DetailTemplate.vue';
   import {useRoute} from "vue-router/dist/vue-router";
   import systemFunctions from "@/assets/systemFunctions";
@@ -48,51 +47,7 @@
       type:'hidden',
       values:[item.data[key]],
     };
-    key='employee_id';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
-    };
-    key='username';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
-    };
-    key='user_group_name';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data['user_group_name']],
-    };
-    key='trial_station_ids';
-    let trial_station_ids=item.data[key].split(",");
-    let trial_station_names=[];
-    for(let i=0;i<taskData.trial_stations.length;i++){
-      if(trial_station_ids.includes(taskData.trial_stations[i].id.toString())){
-        trial_station_names.push(taskData.trial_stations[i].name)
-      }
-    }
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:trial_station_names
-    };
-
-    key='email';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
-    };
     key='name';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
-    };
-    key='mobile_no';
     detailFields[key] = {
       label: labels.get('label_'+key),
       type:'text',
@@ -104,16 +59,10 @@
       type:'text',
       values:[item.data[key]],
     };
-    key='max_logged_browser';
+    key='ordering';
     detailFields[key] = {
       label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
-    };
-    key='mobile_authentication_off_end';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'date',
+      type:'number',
       values:[item.data[key]],
     };
     key='created_at';

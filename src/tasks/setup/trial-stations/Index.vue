@@ -4,10 +4,10 @@
       <List/>
     </div>
     <div v-if="taskData.method=='add'">
-      <Add/>
+      <AddEdit/>
     </div>
     <div v-if="taskData.method=='edit'">
-      <Edit/>
+      <AddEdit/>
     </div>
     <div v-if="taskData.method=='details'">
       <Details/>
@@ -24,8 +24,7 @@
   import axios from 'axios';
 
   import List from './List.vue'
-  import Add from './Add.vue'
-  import Edit from './Edit.vue'
+  import AddEdit from './AddEdit.vue'
   import Details from './Details.vue'
 
   globalVariables.loadListData=true;
@@ -35,19 +34,11 @@
   let taskData=reactive({
     api_url:systemFunctions.getTaskBaseURL(import.meta.url),
     method:'list',
-
     permissions:{},
-    item: {},           //single item
     items: {data:[]},   //from Laravel server with pagination and info
     itemsFiltered: [],    //for display
     columns:{all:{},hidden:[],sort:{key:'',dir:''}},
-    pagination: {current_page: 1,per_page_options: [1,2,10,20,50,100,500,1000],per_page:-1,show_all_items:true},
-    user_groups:[],
-    users_types:[],
-    trial_stations:[],
-    location_parts:[],
-    location_areas :[],
-    location_territories:[],
+    pagination: {current_page: 1,per_page_options: [10,20,50,100,500,1000],per_page:-1,show_all_items:true},
   })
   labels.add([{language:globalVariables.language,file:'tasks'+taskData.api_url+'/labels.js'}])
 
@@ -62,12 +53,6 @@
     else if(route.path.indexOf(taskData.api_url+'/edit/')!=-1)
     {
       taskData.method='edit';
-      // if(!(taskData.permissions.action_2)){
-      //   await router.push(taskData.api_url)
-      // }
-      // else{
-      //   taskData.method='edit';
-      // }
     }
     else if(route.path.indexOf(taskData.api_url+'/details/')!=-1)
     {
@@ -106,11 +91,6 @@
     await axios.get(taskData.api_url+'/initialize').then((res)=>{
       if (res.data.error == "") {
         taskData.permissions=res.data.permissions;
-        taskData.user_groups= res.data.user_groups;
-        taskData.trial_stations= res.data.trial_stations;
-        taskData.location_parts=res.data.location_parts;
-        taskData.location_areas=res.data.location_areas;
-        taskData.location_territories=res.data.location_territories;
         if(res.data.hidden_columns){
           taskData.columns.hidden=res.data.hidden_columns;
         }

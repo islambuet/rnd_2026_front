@@ -87,6 +87,15 @@ const setInputFields=async ()=>{
     default:item.data[key],
     mandatory:false
   };
+  key='crop_group_id';
+  inputFields[key] = {
+    name: 'item[' +key +']',
+    label: labels.get('label_'+key),
+    type:'dropdown',
+    options:taskData.crop_groups.map((item)=>{ return {value:item.id,label:item.name}}),
+    default:item.data[key],
+    mandatory:true
+  };
   key='replica';
   inputFields[key] = {
     name: 'item[' +key +']',

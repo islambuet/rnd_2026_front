@@ -323,6 +323,15 @@ export default {
         bn:"কর্মচারী আইডি"
     },
     //Crops
+
+    label_crop_group_name:{
+        en:"Crop Group",
+        bn:"Crop"
+    },
+    label_crop_group_id:{
+        en:"Crop Group",
+        bn:"Crop"
+    },
     label_crop_id:{
         en:"Crop",
         bn:"Crop"

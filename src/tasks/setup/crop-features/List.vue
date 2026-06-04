@@ -91,16 +91,6 @@
         type:'text',
         filter:{from:'',to:''}
       };
-      key='whose';
-      columns[key]={
-        label: labels.get('label_'+key),
-        hideable:true,
-        sortable:true,
-        filterable:true,
-        type:'dropdown',
-        filter:{from:'',to:'',options:[{value:'ARM',label:'ARM'},{value:'Principal',label:'Principal'},{value:'Competitor',label:'Competitor'}]},
-
-      };
       key='crop_name';
       columns[key]={
         label: labels.get('label_'+key),
@@ -109,15 +99,6 @@
         sortable:true,
         type:'dropdown',
         filter:{from:'',to:'',options:taskData.crops.map((item)=>{ return {value:item.name,label:item.name}}),}
-      };
-      key='crop_type_name';
-      columns[key]={
-        label: labels.get('label_'+key),
-        hideable:true,
-        filterable:true,
-        sortable:true,
-        type:'text',
-        filter:{from:'',to:''}
       };
       key='ordering';
       columns[key]={
@@ -137,16 +118,6 @@
         filterable:true,
         type:'dropdown',
         filter:{from:'',to:'',options:[{value:'Active',label:'Active'},{value:'In-Active',label:'In-Active'}]},
-        class:'col_1'
-      };
-      key='retrial';
-      columns[key]={
-        label: labels.get('label_'+key),
-        hideable:true,
-        sortable:true,
-        filterable:true,
-        type:'dropdown',
-        filter:{from:'',to:'',options:[{label:"Yes",value:'Yes'},{label:"No",value:'No'}]},
         class:'col_1'
       };
       key='created_at';

@@ -36,16 +36,12 @@
     method:'list',
 
     permissions:{},
-    
+    item: {},           //single item
     items: {data:[]},   //from Laravel server with pagination and info
     itemsFiltered: [],    //for display
     columns:{all:{},hidden:[],sort:{key:'',dir:''}},
     pagination: {current_page: 1,per_page_options: [10,20,50,100,500,1000],per_page:50,show_all_items:true},
-    crops:[],
-    crop_types:[],
-    crop_features:[],
-    principals :[],
-    competitors:[],
+    crops:[]
   })
   labels.add([{language:globalVariables.language,file:'tasks'+taskData.api_url+'/labels.js'}])
 
@@ -99,10 +95,6 @@
       if (res.data.error == "") {
         taskData.permissions=res.data.permissions;
         taskData.crops=res.data.crops;
-        taskData.principals=res.data.principals;
-        taskData.competitors=res.data.competitors;
-        taskData.crop_types=res.data.crop_types;
-        taskData.crop_features=res.data.crop_features;
         if(res.data.hidden_columns){
           taskData.columns.hidden=res.data.hidden_columns;
         }

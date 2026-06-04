@@ -43,16 +43,12 @@ let item=reactive({
   inputFields:{},
   data:{
     id:0,
-    name:'',
+    stockin_at:moment().format('YYYY-MM-DDTHH:mm'),
     crop_id:'',
     crop_type_id:'',
-    crop_feature_ids:'',
-    whose:'ARM',
-    principal_id:'',
-    competitor_id:'',
-    ordering:99,
+    variety_id:'',
+    quantity:'',
     status:'Active',
-    retrial:'Yes',
   }
 })
 const setInputFields=async ()=>{
@@ -75,100 +71,54 @@ const setInputFields=async ()=>{
     default:item.data[key],
     mandatory:true
   };
-  key='name';
+  key='stockin_at';
   inputFields[key] = {
     name: 'item[' +key +']',
-    label: labels.get('label_'+key),
-    type:'text',
+    label: 'Date',
+    type:'datetime-local',
     default:item.data[key],
+
     mandatory:true
   };
+
   key='crop_id';
   inputFields[key] = {
     name: 'crop_id',
     label: labels.get('label_'+key),
     type:'dropdown',
-    options:taskData.crops.map((item)=>{ return {value:item.id,label:item.name}}),
+    options:taskData.crops.map((temp)=>{ return {value:temp.id,label:temp.name}}),
     default:item.data[key],
     mandatory:true
   };
   key='crop_type_id';
   inputFields[key] = {
+    name: 'crop_type_id',
+    label: labels.get('label_'+key),
+    type:'dropdown',
+    options:item.data['crop_id']>0?taskData.crop_types.filter((temp)=>{ if(temp.crop_id==item.data['crop_id']){temp.value=temp.id.toString();temp.label=temp.name;return true}}):[],
+    default:item.data[key],
+    mandatory:true
+  };
+  key='variety_id';
+  inputFields[key] = {
     name: 'item[' +key +']',
     label: labels.get('label_'+key),
     type:'dropdown',
-    options:[],
+    options:item.data['crop_type_id']>0?taskData.varieties.filter((temp)=>{ if(temp.crop_type_id==item.data['crop_type_id']){temp.value=temp.id.toString();temp.label=temp.name;return true}}):[],
     default:item.data[key],
     mandatory:true
+  };
+  key='quantity';
+  inputFields[key] = {
+    name: 'item[' +key +']',
+    label: labels.get('label_'+key),
+    type:'text',
+    default:item.data[key],
+    mandatory:true,
+    class:'float_positive'
   };
 
-  key='crop_feature_ids';
-  inputFields[key] = {
-    name: 'item[' +key +']',
-    label: labels.get('label_'+key),
-    type:'checkbox',
-    options:[],
-    default:item.data[key].split(','),
-    //default:[2,3],
-    mandatory:true
-  };
-  key='whose';
-  inputFields[key] = {
-    name: 'item[' +key +']',
-    label: labels.get('label_'+key),
-    type:'dropdown',
-    options:[{value:'ARM',label:'ARM'},{value:'Principal',label:'Principal'},{value:'Competitor',label:'Competitor'}],
-    default:item.data[key],
-    mandatory:true
-  };
-  key='principal_id';
-  inputFields[key] = {
-    name: 'item[' +key +']',
-    label: labels.get('label_'+key),
-    type:'dropdown',
-    options:taskData.principals.map((item)=>{ return {value:item.id,label:item.name}}),
-    default:item.data[key],
-    mandatory:true
-  };
-  key='competitor_id';
-  inputFields[key] = {
-    name: 'item[' +key +']',
-    label: labels.get('label_'+key),
-    type:'dropdown',
-    options:taskData.competitors.map((item)=>{ return {value:item.id,label:item.name}}),
-    default:item.data[key],
-    mandatory:true
-  };
-  key='ordering';
-  inputFields[key] = {
-    name: 'item[' +key +']',
-    label: labels.get('label_'+key),
-    type:'number',
-    default:item.data[key],
-    mandatory:false
-  };
-  key='status';
-  inputFields[key] = {
-    name: 'item[' +key +']',
-    label: labels.get('label_'+key),
-    type:'dropdown',
-    options:[{label:"Active",value:'Active'},{label:"In-Active",value:'In-Active'}],
-    default:item.data[key],
-    mandatory:true
-  };
-  key='retrial';
-  inputFields[key] = {
-    name: 'item[' +key +']',
-    label: labels.get('label_'+key),
-    type:'dropdown',
-    options:[{label:"Yes",value:'Yes'},{label:"No",value:'No'}],
-    default:item.data[key],
-    mandatory:true
-  };
   item.inputFields=inputFields;
-  await systemFunctions.delay(1);
-  $('#whose').trigger('change');
-  $('#crop_id').trigger('change');
 
 }
 const save=async (save_and_new)=>{
@@ -211,34 +161,28 @@ const getItem=async ()=>{
 
 $(document).ready(function()
 {
-  $(document).off("change", "#whose");
-  $(document).on("change",'#whose',function()
-  {
-    let whose=$(this).val();
-    if(whose=='Principal'){
-      $('#principal_id').closest('.row').show();
-      $('#competitor_id').closest('.row').hide();
-    }
-    else if(whose=='Competitor'){
-      $('#principal_id').closest('.row').hide();
-      $('#competitor_id').closest('.row').show();
-    }
-    else{
-      $('#principal_id').closest('.row').hide();
-      $('#competitor_id').closest('.row').hide();
-    }
-  })
   $(document).off("change", "#crop_id");
-  $(document).on("change",'#crop_id',function()
+  $(document).on("change",'#crop_id',async function()
   {
     let crop_id=$(this).val();
-    let key='crop_feature_ids';
-    item.inputFields[key].options=taskData.crop_features.filter((item)=>{ if(item.crop_id==crop_id){item.value=item.id.toString();item.label=item.name;return true}})
-    key='crop_type_id';
-    item.inputFields[key].options=taskData.crop_types.filter((item)=>{ if(item.crop_id==crop_id){item.value=item.id.toString();item.label=item.name;return true}})
-    // console.log(item.inputFields[key].options);
-    // console.log(crop_id)
+    let key='crop_type_id';
+    item.inputFields[key].options=taskData.crop_types.filter((temp)=>{ if(temp.crop_id==crop_id){temp.value=temp.id.toString();temp.label=temp.name;return true}})
+    await systemFunctions.delay(1);
+    $('#'+key).val('');
+    key='variety_id';
+    item.inputFields[key].options=[];
+    $('#'+key).val('');
+  })
+  $(document).off("change", "#crop_type_id");
+  $(document).on("change",'#crop_type_id',async function()
+  {
 
+    let crop_type_id=$(this).val();
+    let key='variety_id';
+    console.log(crop_type_id)
+    item.inputFields[key].options=taskData.varieties.filter((temp)=>{ if(temp.crop_type_id==crop_type_id){temp.value=temp.id.toString();temp.label=temp.name;return true}})
+    await systemFunctions.delay(1);
+    $('#'+key).val('');
   })
 });
   if(item.id>0){

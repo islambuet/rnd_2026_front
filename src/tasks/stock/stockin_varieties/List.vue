@@ -1,13 +1,45 @@
-<template>    
-    <div class="card d-print-none mb-2">
-        <div class="card-body">
-            <router-link v-if="taskData.permissions.action_1"  :to="taskData.api_url+'/add'" class="mr-2 mb-2 btn btn-sm bg-gradient-primary" ><i class="feather icon-plus-circle"></i> {{labels.get('action_1')}}</router-link>
-            <button type="button" v-if="taskData.permissions.action_4" class="mr-2 mb-2 btn btn-sm bg-gradient-primary" onclick="window.print();"><i class="feather icon-printer"></i> {{labels.get('action_4')}}</button>
-            <button type="button" v-if="taskData.permissions.action_5" class="mr-2 mb-2 btn btn-sm bg-gradient-primary" @click="systemFunctions.exportCsvFromHtmlTable('#table_list',labels.get('label_task'))"><i class="feather icon-download"></i> {{labels.get('action_5')}}</button>
-            <button type="button" v-if="taskData.permissions.action_8" class="mr-2 mb-2 btn btn-sm" :class="[show_column_controls?'bg-gradient-success':'bg-gradient-primary']" @click="show_column_controls = !show_column_controls"><i class="feather icon-command"></i> {{labels.get('action_8')}}</button>
-            <button type="button" v-if="taskData.permissions.action_0" class="mr-2 mb-2 btn btn-sm bg-gradient-primary" @click="taskData.reloadItems(taskData.pagination)"><i class="feather icon-rotate-cw"></i> {{labels.get('label_refresh')}}</button>
-        </div>            
+<template>
+  <div class="card d-print-none mb-2">
+    <div class="card-body">
+      <form id="formListSearch">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-4">
+                <label class="font-weight-bold float-right">From</label>
+              </div>
+              <div class="col-8">
+                <div class="input-group">
+                  <input id="list_search_date_from" type="date" class="form-control"  name="options[date_from]" value=""/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-4">
+                <label class="font-weight-bold float-right">To</label>
+              </div>
+              <div class="col-8">
+                <div class="input-group">
+                  <input id="list_search_date_to" type="date" class="form-control"  name="options[date_to]" value=""/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
+  </div>
+  <div class="card d-print-none mb-2">
+      <div class="card-body">
+          <router-link v-if="taskData.permissions.action_1"  :to="taskData.api_url+'/add'" class="mr-2 mb-2 btn btn-sm bg-gradient-primary" ><i class="feather icon-plus-circle"></i> {{labels.get('action_1')}}</router-link>
+          <button type="button" v-if="taskData.permissions.action_4" class="mr-2 mb-2 btn btn-sm bg-gradient-primary" onclick="window.print();"><i class="feather icon-printer"></i> {{labels.get('action_4')}}</button>
+          <button type="button" v-if="taskData.permissions.action_5" class="mr-2 mb-2 btn btn-sm bg-gradient-primary" @click="systemFunctions.exportCsvFromHtmlTable('#table_list',labels.get('label_task'))"><i class="feather icon-download"></i> {{labels.get('action_5')}}</button>
+          <button type="button" v-if="taskData.permissions.action_8" class="mr-2 mb-2 btn btn-sm" :class="[show_column_controls?'bg-gradient-success':'bg-gradient-primary']" @click="show_column_controls = !show_column_controls"><i class="feather icon-command"></i> {{labels.get('action_8')}}</button>
+          <button type="button" v-if="taskData.permissions.action_0" class="mr-2 mb-2 btn btn-sm bg-gradient-primary" @click="taskData.reloadItems(taskData.pagination)"><i class="feather icon-rotate-cw"></i> {{labels.get('label_search')}}</button>
+      </div>
+  </div>
   <ColumnControl :url="taskData.api_url.substring(1)" :columns="taskData.columns"  v-if="show_column_controls"/>
   <div class="card mb-2">
     <div class="card-header d-print-none">
@@ -39,7 +71,7 @@
             </div>
           </td>
           <template v-for="(column,key) in taskData.columns.all">
-            <td :class="((['id','ordering'].indexOf(key) != -1)?'text-right':'')+(column.class?(' '+column.class):'col_9')" v-if="taskData.columns.hidden.indexOf(key)<0" :key="'td_'+key">
+            <td :class="((['id','ordering','initial_plants'].indexOf(key) != -1)?'text-right':'')+(column.class?(' '+column.class):'col_9')" v-if="taskData.columns.hidden.indexOf(key)<0" :key="'td_'+key">
               {{ item[key] }}
             </td>
           </template>
@@ -68,8 +100,6 @@
     const router =useRouter()
     let taskData = inject('taskData')
     let show_column_controls=ref(false)
-
-
     const setColumns=()=>{
       let columns={}
       let key='id';
@@ -82,24 +112,14 @@
         filter:{from:'',to:''},
         class:'col_1'
       };
-      key='name';
+      key='stockin_at';
       columns[key]={
-        label: labels.get('label_'+key),
-        hideable:false,
-        filterable:true,
-        sortable:true,
-        type:'text',
-        filter:{from:'',to:''}
-      };
-      key='whose';
-      columns[key]={
-        label: labels.get('label_'+key),
+        label: 'Date',
         hideable:true,
-        sortable:true,
         filterable:true,
-        type:'dropdown',
-        filter:{from:'',to:'',options:[{value:'ARM',label:'ARM'},{value:'Principal',label:'Principal'},{value:'Competitor',label:'Competitor'}]},
-
+        sortable:true,
+        type:'date',
+        filter:{from:'',to:''}
       };
       key='crop_name';
       columns[key]={
@@ -119,7 +139,16 @@
         type:'text',
         filter:{from:'',to:''}
       };
-      key='ordering';
+      key='variety_name';
+      columns[key]={
+        label: labels.get('label_variety_name'),
+        hideable:true,
+        filterable:true,
+        sortable:true,
+        type:'text',
+        filter:{from:'',to:''}
+      };
+      key='quantity';
       columns[key]={
         label: labels.get('label_'+key),
         hideable:true,
@@ -129,37 +158,12 @@
         filter:{from:'',to:''},
         class:'col_1'
       };
-      key='status';
-      columns[key]={
-        label: labels.get('label_'+key),
-        hideable:true,
-        sortable:true,
-        filterable:true,
-        type:'dropdown',
-        filter:{from:'',to:'',options:[{value:'Active',label:'Active'},{value:'In-Active',label:'In-Active'}]},
-        class:'col_1'
-      };
-      key='retrial';
-      columns[key]={
-        label: labels.get('label_'+key),
-        hideable:true,
-        sortable:true,
-        filterable:true,
-        type:'dropdown',
-        filter:{from:'',to:'',options:[{label:"Yes",value:'Yes'},{label:"No",value:'No'}]},
-        class:'col_1'
-      };
-      key='created_at';
-      columns[key]={
-        label: labels.get('label_'+key),
-        hideable:true,
-        filterable:true,
-        sortable:true,
-        type:'date',
-        filter:{from:'',to:''}
-      };
       taskData.columns.all=columns
     }
     setColumns();
+    $(document).ready(async function()
+    {
+      taskData.reloadItems(taskData.pagination)
+    })
 </script>
 

@@ -65,17 +65,18 @@
       type:'text',
       values:[item.data[key]],
     };
-    key='variety_sub_type_name';
+    key='crop_feature_ids';
+    let crop_features_ids=item.data[key].split(",");
+    let crop_features_names=[];
+    for(let i=0;i<taskData.crop_features.length;i++){
+      if(crop_features_ids.includes(taskData.crop_features[i].id.toString())){
+        crop_features_names.push(taskData.crop_features[i].name)
+      }
+    }
     detailFields[key] = {
       label: labels.get('label_'+key),
       type:'text',
-      values:[item.data[key]],
-    };
-    key='characteristics';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
+      values:crop_features_names
     };
     key='whose';
     detailFields[key] = {

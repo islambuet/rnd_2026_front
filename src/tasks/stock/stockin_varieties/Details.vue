@@ -47,48 +47,39 @@
       type:'hidden',
       values:[item.data[key]],
     };
-    key='name';
+    key='stockin_at';
     detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
-    };
-    key='code';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
-    };
-    key='crop_group_name';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
-    };
-    key='replica';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
-    };
-    key='status';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'text',
-      values:[item.data[key]],
-    };
-    key='ordering';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
-      type:'number',
-      values:[item.data[key]],
-    };
-    key='created_at';
-    detailFields[key] = {
-      label: labels.get('label_'+key),
+      label: 'Date',
       type:'date-time',
       values:[item.data[key]],
     };
+    key='crop_name';
+    detailFields[key] = {
+      label: labels.get('label_'+key),
+      type:'text',
+      values:[item.data[key]],
+    };
+    key='crop_type_name';
+    detailFields[key] = {
+      label: labels.get('label_'+key),
+      type:'text',
+      values:[item.data[key]],
+    };
+    key='variety_name';
+    detailFields[key] = {
+      label: labels.get('label_'+key),
+      type:'text',
+      values:[item.data[key]],
+    };
+    key='quantity';
+    detailFields[key] = {
+      label: labels.get('label_'+key),
+      type:'text',
+      values:[item.data[key]],
+    };
+
+
+
     item.detailFields=detailFields;
   }
   const getItem=async ()=>{
